@@ -1,0 +1,10 @@
+pycairo
+cairocffi
+CairoSVG
+matplotlib
+moderngl
+numba
+numpy
+Pillow
+pygame
+simpy

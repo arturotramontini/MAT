@@ -54,8 +54,8 @@ class CL_App1():
         self.root = root
 
         # Definizione della larghezza e altezza del mandelbrot image
-        # self.widthImg, self.heightImg = 12000 , 12000 # 3840,2160        
-        self.widthImg, self.heightImg = 12000 , 12000 # 3840,2160        
+        self.widthImg, self.heightImg = 14000 , 14000 # 3840,2160        
+        # self.widthImg, self.heightImg = 2000 , 2000 # 3840,2160        
         self.width, self.height = 1000, 1000
         # Imposta dimensioni e posizione della finestra (larghezza x altezza + x + y)
         self.root.geometry("1300x1600+0+0")
@@ -701,7 +701,7 @@ class CL_mandelbrot():
 
         print("qui4444444441234")    
 
-        n = 1000
+        n = 731
         # rd = 0.01
         # cx = -1.5
         # cy = 0

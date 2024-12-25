@@ -264,8 +264,6 @@ def mandelbrot_cpu(rd, x_min, x_max, y_min, y_max, width, height, max_iter, var1
             # ------------
             p = ((x+y*width)/(width*height))
             var2[0] = int(100 * p)
-            # if p%10:
-            #     var2[0] = p
             # ------------
 
             zx, zy = x * (x_max - x_min) / width + x_min, y * \
@@ -274,168 +272,47 @@ def mandelbrot_cpu(rd, x_min, x_max, y_min, y_max, width, height, max_iter, var1
             z = 0.0j
             iter = 0
 
-            # z1 = c
-            # z2 = c
             zprev = z
             zin = 1e-3
-            # zinMin = zin
 
             dist = (z * zprev.conjugate()).real
             r2 = max_radius * max_radius
 
-            # max_iter = 30
-
             # modo che funziona abbastanza
             while dist < r2 and iter < max_iter:
-            # while abs(z) < max_radius and n < max_iter:
-                # zprev = z
                 z = z*z + c
                 iter += 1
-                # z2 = z1
-                # z1 = z
-                # dist = (z * zprev.conjugate()).real
                 dist = (z * z.conjugate()).real
-
-
                 if dist < rd and dist > 0:
-                # if dist > 0:
                     zin = dist
-                # zin = dist
 
+            L1 = abs( math.log(dist) / math.log(max_radius) ) # smooth
+            L2 = math.log(L1) / math.log(2) # smoother
 
+            fractIter =  L2 - 0
 
-            # # while abs(z) < r2 and iter < max_iter:
-            # #     zprev = z
-            # #     z = z*z + c
-            # #     iter += 1
-            # #     dist = abs(z-c)
-            # #     if dist < rd  and dist > 0:
-            # #         zin = dist
-            # #         # if zinMin > zin :
-            # #         #     zinMin = zin
+            iterF = iter - fractIter # transizioni sfumate
 
-            
-            # dist = abs(zin)
+            v = math.sqrt(iterF/max_iter) # *360
 
-            # this return 0..1 , is for linear interpolation
-            #fractIter = (dist - max_radius) / (max_radius*max_radius - max_radius)    
-            
-            # this is from loaritmic interpolation
-            # dist = max ( 1e-15, dist )
-            
-            # L1 = 0
-            # L2 = 0
-            # if(dist <= 0) :
-            #     dist = 1e-15
-            # try:
-            #     L1 = abs( math.log(dist) / math.log(max_radius) ) # smooth
-            #     L2 = math.log(L1) / math.log(2) # smoother
-            # except Exception as e:
-            #     # print(dist)
-            #     # print(max_radius)
-            #     # print(L1)
-            #     # print(L2)
-            #     # print(e)
-            #     exit()
-            # # fractIter =  L1 - 1
-            # # fractIter =  L2 - 1
-
-            # # distance from  draw center, and not from 0,0
-            # dist = dist - abs(c)
-
-            # L1 = abs( math.log(dist) / math.log(max_radius) ) # smooth
-            # L2 = math.log(L1) / math.log(2) # smoother
-
-            # fractIter =  L2 - 0
-
-
-            # # n += fractIter  # transizioni marcate
-            # iterF = iter - fractIter # transizioni sfumate
-
-            # # senza sfumature
-            # # iterF = int(iter) - 0 # transizioni NON sfumate
-            # # iterF = iter - 0 # transizioni NON sfumate
-
-
-
-            # v = math.sqrt(iterF/max_iter) # *360
-
-            # v = math.sqrt(n/max_iter) # *360
-
-            # deriva da keyM e oFrame1 slider
-            # n = pippolo[1]
-
-            # v = 0.5 + 0.5 * math.sin(v * (2+pippolo1[3]))
-
-
-            # r,g,b = hsl_to_rgb(v,0.5,0.5)
-
-            lzin = abs(math.log(zin)) /5
-            lzin = min(max(lzin,.1),5)
-            # lzin = abs(math.log10(lzin)) #math.log10(10))
-
-            v = 5/6 # 0/6 = rosso,  2/6 = verde, 4/6 = blu, 6/6 = rosso
-            r,g,b = hsv_to_rgb_2(lzin,lzin,.8)
+            r,g,b = hsv_to_rgb_2(v,1,1)
             r, g, b = [int(xv * 255) for xv in (r, g, b)]
 
-            # color = (int(r*255) << 16) | (int(g*255) << 8) | (int(b*255) << 0) | 0x0ff000000
             color = (b << 16) | (g << 8) | (r << 0) | 0x0ff000000
-            # color &= 0x0fffffff00
 
+            # se  parte interna
+            if iter >= max_iter  :
 
-
-            # colore di default
-            # color = 0xff00ff00
-
-            # se entrambe le parti
-            # if  True :
-
-
-            # se solo parte esterna
-            if iter < max_iter  or True:
-
-
-            # se solo parte interna
-            # if iter >= max_iter  :
-
-            # esclusione 
-            # if iter == -1234  :
-
-
-
-                # v = abs(math.log(abs(z) - max_radius)) / (max_radius * max_radius - max_radius)
-                # v = abs(math.log(abs(z) - 0)) / (max_radius * max_radius - max_radius)
-                
-                # parte interna
-                # zin è < radius visualizzazione
-                
-                # v = abs(math.log10(zin))
-                # v = abs(math.log10(abs(zin)))
-
-                # v = abs(math.log10(abs(z)))
-
-                # v %= 1 # solo parte
-
-                # v = abs(math.log10(abs(zin-c )))
                 v = abs(math.log10(abs(zin-0 )))
+
 
                 k = 8
                 v = v / k  
                 v = abs(math.log10(v)/math.log10(3.0))
-                # v = abs(math.log(v)/math.log(3.2))
-                # v = abs(math.log(v)/math.log(1.1))
-                # v = abs(math.log(v))
 
-                # v %= 1
-
-                # v = 0
 
                 r,g,b = hsv_to_rgb_2(v,1,1)
 
-                # r = r    
-                # t = g
-                # g = b
-                # b = t
 
                 b *= .3
 
@@ -446,69 +323,17 @@ def mandelbrot_cpu(rd, x_min, x_max, y_min, y_max, width, height, max_iter, var1
 
                 # ABGR
                 color &= 0x0ffffffff                
-                # color &= 0x0ffffff00                
 
-            # z3 = z1
-            # if (abs(z1) > abs(z2)):
-            #     z3 = z2    
-
-            # # d = abs(z3-c)
-            # # d = abs(z3-c)
-
-            # d = abs(zin-c)
-
-
-            # if d==0 :
-            #     d = 1e-14
-
-
-            # # n = int(pow(2,3) * abs(math.log(d)/math.log(10)))
-            # # n = int(pow(2,9) * (math.log(d)))
-            # # n %= 360
-            # n = abs(math.log(d)/math.log(10))
-            # # red,gre,blu = hsv_to_rgb_1(n,1,1)
-            # red,gre,blu = hsv_to_rgb_1(n,1,1)
-            # blu = (n & 15) << 4
-            # n >>= 4
-            # gre = (n & 15) << 4
-            # n >>= 4
-            # red = (n & 15) << 4
-
-
-            # color = (int(red*255) << 16) | (int(gre*255) << 8) | (int(blu*255) << 0) | 0x0ff000000
-            # color &= 0x0ffffff00
-
-            # y = (int)(min(height-1,y))
-            # x = (int)(min(width-1,x))
-            # print(y,x,height,width, f'{color:X}')
             if var1 != 0:
                 color = color ^ 0x00ffff00
             image[y, x] = color
-    # # --------------------------------------
-    # w1 = width
-    # h1 = height
-    # w2 = int(w1 / 2)
-    # h2 = int(h1 / 2)
-    # for n in range(w1):
-    #     image[h2, n] = 0xffff00ff
-    # for n in range(h1):
-    #     image[n, w2] = 0xffff00ff
-    # # --------------------------------------
 
 
-    # v1 = pippolo[0] * 2
-    # print (f"variabile: ",  pippolo[0], "  --stop-- \n")
-    # print(f'horizontal slider in mandelbrot_cpu: ', pippolo1[0])
-    # print(f'horizontal slider in mandelbrot_cpu: ', pippolo1[1])
-    # print(f'horizontal slider in mandelbrot_cpu: ', pippolo1[2])
-    # print(f'horizontal slider in mandelbrot_cpu 3a: ', pippolo1[3])
-
-
-    # pippolo[0] += 1.1
     cioppi = np.zeros(2,dtype=np.float64)
     cioppi [0] = 1234.5678
 
     return cioppi, image
+
 # endregion
 
 
