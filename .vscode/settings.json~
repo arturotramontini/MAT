@@ -1,0 +1,5 @@
+{
+    "editor.fontFamily": "Latin Modern Mono Prop",
+    // "editor.fontFamily": "Latin Modern Roman Unslanted",
+    "editor.fontLigatures": false
+}

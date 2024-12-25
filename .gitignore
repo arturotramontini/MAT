@@ -1,0 +1,6 @@
+*.PNG
+*.jpg
+__pycache__/
+img/
+PROVE/
+old/
